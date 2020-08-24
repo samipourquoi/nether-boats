@@ -1,29 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "netherboats",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Nether Boats",
+  "description": "Fabric mod which adds boats made out of nether wood",
   "authors": [
-    "Me!"
+    "samipourquoi"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/samipourquoi/nether-boats"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/netherboats/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.netherboats.example.ExampleMod"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "netherboats.mixins.json"
   ],
 
   "depends": {
