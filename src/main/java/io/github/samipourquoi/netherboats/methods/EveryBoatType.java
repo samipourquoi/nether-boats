@@ -1,3 +1,5 @@
+package io.github.samipourquoi.netherboats.methods;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.vehicle.BoatEntity;

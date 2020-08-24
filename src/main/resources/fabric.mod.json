@@ -18,7 +18,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.netherboats.example.ExampleMod"
+      "io.github.samipourquoi.netherboats.NetherBoats"
     ]
   },
   "mixins": [
