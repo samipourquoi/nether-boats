@@ -1,10 +1,11 @@
 package io.github.samipourquoi.netherboats.mixin;
 
-import io.github.samipourquoi.netherboats.methods.EveryBoatType;
-import io.github.samipourquoi.netherboats.methods.MoreBoatType;
+import io.github.samipourquoi.netherboats.EveryBoatType;
+import io.github.samipourquoi.netherboats.methods.MoreBoatEntity;
 import io.github.samipourquoi.netherboats.NetherBoats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
@@ -15,23 +16,19 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BoatEntity.class)
-public abstract class MixinBoatEntity extends Entity implements MoreBoatType {
+public abstract class MixinBoatEntity extends Entity implements MoreBoatEntity {
 	@Shadow @Final private static TrackedData<Integer> BOAT_TYPE;
-
 	@Shadow @Final private static TrackedData<Integer> DAMAGE_WOBBLE_TICKS;
-
 	@Shadow @Final private static TrackedData<Integer> DAMAGE_WOBBLE_SIDE;
-
 	@Shadow @Final private static TrackedData<Float> DAMAGE_WOBBLE_STRENGTH;
-
 	@Shadow @Final private static TrackedData<Boolean> LEFT_PADDLE_MOVING;
-
 	@Shadow @Final private static TrackedData<Boolean> RIGHT_PADDLE_MOVING;
-
 	@Shadow @Final private static TrackedData<Integer> BUBBLE_WOBBLE_TICKS;
-
 	@Shadow public abstract BoatEntity.Type getBoatType();
 
 	public MixinBoatEntity(EntityType<?> type, World world) {
@@ -58,7 +55,7 @@ public abstract class MixinBoatEntity extends Entity implements MoreBoatType {
 	/** @author samipourquoi */
     @Overwrite
     public Item asItem() {
-        switch(((MoreBoatType) this).getMoreBoatType()) {
+        switch(((MoreBoatEntity) this).getMoreBoatType()) {
             case OAK:
             default:
                 return Items.OAK_BOAT;
@@ -83,13 +80,29 @@ public abstract class MixinBoatEntity extends Entity implements MoreBoatType {
     @Overwrite
 	public void readCustomDataFromTag(CompoundTag tag) {
 		if (tag.contains("Type", 8)) {
-			((MoreBoatType) this).setMoreBoatType(EveryBoatType.getType(tag.getString("Type")));
+			((MoreBoatEntity) this).setMoreBoatType(EveryBoatType.getType(tag.getString("Type")));
 		}
+	}
+
+	/** @author samipourquoi */
+	@Overwrite
+	public void writeCustomDataToTag(CompoundTag tag) {
+		tag.putString("Type", ((MoreBoatEntity) this).getMoreBoatType().getName());
 	}
 
 	/** @author samipourquoi */
 	@Override
 	public EveryBoatType getMoreBoatType() {
 		return EveryBoatType.getType((Integer) this.dataTracker.get(BOAT_TYPE));
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource damageSource) {
+		boolean epicBoat = false;
+		EveryBoatType type = ((MoreBoatEntity) this).getMoreBoatType();
+		if ((type == EveryBoatType.WARPED || type == EveryBoatType.CRIMSON) && damageSource.isFire()) {
+			epicBoat = true;
+		}
+		return super.isInvulnerableTo(damageSource) || epicBoat;
 	}
 }

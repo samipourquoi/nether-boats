@@ -7,7 +7,9 @@
     "MixinBoatEntity",
     "MixinBoatItem"
   ],
-  "client": [],
+  "client": [
+    "MixinBoatEntityRenderer"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

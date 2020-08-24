@@ -1,4 +1,4 @@
-package io.github.samipourquoi.netherboats.methods;
+package io.github.samipourquoi.netherboats;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;

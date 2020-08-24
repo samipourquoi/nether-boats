@@ -1,6 +1,5 @@
 package io.github.samipourquoi.netherboats;
 
-import io.github.samipourquoi.netherboats.methods.EveryBoatType;
 import io.github.samipourquoi.netherboats.methods.MoreBoatItem;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.vehicle.BoatEntity;
